@@ -1,0 +1,160 @@
+{% include 'messages.html' %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>order form</title>
+    <style>
+  body{ background:#dee9ff;}
+.con{
+  width: 600px;
+  background:#FFFFFF;
+  margin:0 auto;
+  padding-top:30px;
+  padding-bottom:30px;
+}
+
+h1{
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: bold;
+  color:#6f6f6f;
+  text-align: center;
+
+}
+
+table{
+  font-family: Calibri;
+  color:#6f6f6f;
+  font-size: 11pt;
+  font-style: normal;
+  font-weight: bold;
+  background-color: #FFFFFF;
+  border-collapse: collapse;
+  border-radius:10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+}
+
+.submit{
+
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #5791ff;
+    border: none;
+    color: white;
+	width:400px;
+}
+
+</style>
+
+</head>
+<body>
+<form method="post" id="personForm" data-courses-url="{% url 'ajax_load_courses' %}">
+    {% csrf_token %}
+<table align="center" cellpadding = "10">
+    <tr>  <td colspan="4"><h1>ORDER FORM </h1></td>  </tr>
+    <tr>
+      <td>First Name</td>
+      <td><input name="fname" type="text" /></td>
+      <td>Last Name</td>
+      <td><input name="" type="text" /></td>
+    </tr>
+
+  <tr>
+      <td>Mobile No</td>
+      <td><input name="phone" type="text" /></td>
+      <td>Age</td>
+      <td><input name="age" type="number" /></td>
+    </tr>
+    <tr>
+      <td><label for="dob">DOB:</label></td>
+        <td><input type="text" name="dob" id="dob" placeholder="DOB"></td>
+      <td><label for="gender">Gender:</label></td>
+        <td><input type="text" name="gender" id="gender" placeholder="Gender"></td>
+
+    </tr>
+    <tr>
+      <td>Email Address</td>
+      <td colspan="4"><input name="email" type="text" size="62"></td>
+    </tr>
+    <tr>
+      <td>Address</td>
+      <td colspan="4"><textarea name="address" cols="53" rows="5"></textarea></td>
+    </tr>
+
+    <tr>
+      <td><label for="purpose">Purpose</label></td>
+        <td>
+          <select name="purpose" id="purpose">
+            <option value="">Select Purpose</option>
+            <option value="for">For Enquiry</option>
+            <option value="place">Place Order </option>
+            <option value="return">Return</option>
+
+          </select>
+        </td>
+    </tr>
+
+
+<tr>
+    <td>{{ form.as_p }}</td>
+</tr>
+    <tr>
+        <td>Materials required</td>
+        <td>
+            <input type="checkbox" name="chk[]" value="Java">papers
+           <br><br>
+           <input type="checkbox" name="chk[]" value=".NET">Notebook
+           <br><br>
+            <input type="checkbox" name="chk[]" value="PHP">Pen
+
+        </td>
+    </tr>
+{{key}}
+     <tr>
+         <td></td>
+
+      <td colspan="4"><input type="submit" value="Submit" class="submit"></td>
+<a href="/">Back</a>
+    </tr>
+</table>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_department").change(function () {
+        const url = $("#personForm").attr("data-courses-url");  // get the url of the `load_cities` view
+        const departmentId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'department_id': departmentId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_course").html(data);  // replace the contents of the city input with the data that came from the server
+                /*
+
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (course) {
+                    html_data += `<option value="${course.id}">${course.name}</option>`
+                });
+                console.log(html_data);
+                $("#id_course").html(html_data);
+
+                */
+            }
+        });
+
+    });
+</script>
+
+
+</body>
+</html>
